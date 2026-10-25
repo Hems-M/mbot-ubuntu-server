@@ -26,6 +26,12 @@ if $rebuild || [[ ! -f "$site/index.html" ]]; then
         exit 1
     }
     command -v docker >/dev/null || { echo "Docker is needed to build the site: https://www.docker.com/products/docker-desktop/"; exit 1; }
+    docker info >/dev/null 2>&1 || {
+        echo "Docker is installed but not running. Start it, then run this again:"
+        echo "    Docker Desktop: open the Docker app"
+        echo "    Colima: colima start"
+        exit 1
+    }
     echo "Building the website (the first time takes a few minutes)..."
     rm -rf "$build"
     mkdir -p "$build"
