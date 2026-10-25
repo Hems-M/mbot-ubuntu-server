@@ -7,7 +7,7 @@ Your code, the labs and the checkpoints work the same way as before. Only the se
 This repository has two things:
 
 - the link to download the image
-- the ROB550 website pages for this image, which you can open on your own computer
+- the ROB550 website pages for this image, online and to open on your own computer
 
 ## 1. Download the image
 
@@ -27,7 +27,7 @@ It should print `1af1148410ae8aec73227b72c2d04822c77c20ffad5d846ec118bd40ea79dfe
 
 ## 2. Set up your robot
 
-The full steps are on the website (section 3 below), under **Botlab > MBot System Setup**. In short:
+The full steps are on the [course website](https://hems-m.github.io/mbot-ubuntu-server/docs/botlab/mbot-system-setup-Pi5.html), under **Botlab > MBot System Setup**. In short:
 
 1. Flash the image to the SD card with [Balena Etcher](https://etcher.balena.io/).
 2. On the SD card, open `mbot_config.txt` and set `mbot_hostname`, for example `mbot-AM-team6-johndoe`. Add your home Wi-Fi if you want to use the robot at home.
@@ -52,9 +52,15 @@ The full steps are on the website (section 3 below), under **Botlab > MBot Syste
    mbot health
    ```
 
-## 3. Open the course website on your computer
+## 3. The course website
 
-You need [Docker Desktop](https://www.docker.com/products/docker-desktop/) (only to build the site) and python3.
+Open the ROB550 website with the pages for this image:
+
+**https://hems-m.github.io/mbot-ubuntu-server/docs/botlab/mbot-system-setup-Pi5.html**
+
+It is updated automatically when the pages in this repository change.
+
+To work on the pages and see them on your own computer first, you need [Docker Desktop](https://www.docker.com/products/docker-desktop/) (only to build the site) and python3:
 
 ```bash
 git clone --recurse-submodules https://github.com/Hems-M/mbot-ubuntu-server.git
@@ -62,11 +68,7 @@ cd mbot-ubuntu-server
 website/serve.sh
 ```
 
-The first time takes a few minutes. Then open:
-
-http://localhost:4000/docs/botlab/mbot-system-setup-Pi5.html
-
-Press `Ctrl+C` in the terminal to stop it. Next time, `website/serve.sh` opens it right away.
+Then open http://localhost:4000/docs/botlab/mbot-system-setup-Pi5.html. The pages you change are in `website/overlay/`.
 
 ## Commands on the robot
 

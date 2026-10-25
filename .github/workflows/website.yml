@@ -1,0 +1,63 @@
+# Builds the ROB550 website with the MBot Ubuntu Server pages and publishes it
+# with GitHub Pages, on every push to main.
+name: Website
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Course site with the MBot Ubuntu Server pages on top
+        run: |
+          mkdir -p _build
+          rsync -a --exclude .git website/rob550-docs/ _build/
+          rsync -a website/overlay/ _build/
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+          working-directory: _build
+
+      - id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Build
+        working-directory: _build
+        env:
+          JEKYLL_ENV: production
+        run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
+
+      - name: Links from the site root
+        run: python3 .github/fix-links.py _build/_site "${{ steps.pages.outputs.base_path }}"
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _build/_site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
